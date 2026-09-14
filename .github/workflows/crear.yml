@@ -1,0 +1,25 @@
+name: Compilar OpenWrt CSI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Instalar dependencias
+      run: sudo apt-get update && sudo apt-get install build-essential git libncurses5-dev zlib1g-dev gawk flex quilt libssl-dev unzip python3
+    - name: Clonar código CSI
+      run: git clone https://github.com/xieyaxing/Atheros-CSI-Tool-OpenWRT-System.git openwrt
+    - name: Actualizar e inyectar configuración
+      run: |
+        cd openwrt
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+        cp ../config_wr720n.txt .config
+        make defconfig
+    - name: Compilar Firmware
+      run: cd openwrt && make -j$(nproc) V=s
+    - name: Subir archivo BIN
+      uses: actions/upload-artifact@v3
+      with:
+        name: WR720N-CSI-Firmware
+        path: openwrt/bin/ar71xx/*.bin
