@@ -1,0 +1,10 @@
+CONFIG_TARGET_ar71xx=y
+CONFIG_TARGET_ar71xx_generic=y
+CONFIG_TARGET_ar71xx_generic_TLWR720=y
+# Eliminar paquetes pesados
+# CONFIG_PACKAGE_luci is not set
+# CONFIG_PACKAGE_kmod-ipv6 is not set
+# CONFIG_PACKAGE_ppp is not set
+# Agregar las herramientas
+CONFIG_PACKAGE_tcpdump=y
+CONFIG_PACKAGE_iw=y
