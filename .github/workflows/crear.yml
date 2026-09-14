@@ -8,7 +8,7 @@ jobs:
     - name: Instalar dependencias
       run: sudo apt-get update && sudo apt-get install build-essential git libncurses5-dev zlib1g-dev gawk flex quilt libssl-dev unzip python3
     - name: Clonar código CSI
-      run: git clone https://github.com/xieyaxing/Atheros-CSI-Tool-OpenWRT-System.git openwrt
+      run: git clone https://github.com/xieyaxiongfly/Atheros_CSI_tool_OpenWRT_src.git openwrt
     - name: Actualizar e inyectar configuración
       run: |
         cd openwrt
