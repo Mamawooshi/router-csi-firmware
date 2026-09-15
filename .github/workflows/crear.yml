@@ -3,29 +3,21 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ubuntu:20.04
     steps:
-    - name: Preparar cápsula del tiempo (Ubuntu 20.04)
-      run: |
-        apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git libncurses5-dev zlib1g-dev gawk flex quilt libssl-dev unzip python3 python2 python-is-python2 time file wget curl sudo bison gettext autoconf automake libtool pkg-config bc m4
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: Clonar código CSI
-      run: git clone https://github.com/xieyaxiongfly/Atheros_CSI_tool_OpenWRT_src.git openwrt
-    - name: Actualizar e inyectar configuración
+    - name: Compilar en Ubuntu 18.04 (Docker)
       run: |
-        cd openwrt
-        ./scripts/feeds update -a
-        ./scripts/feeds install -a
-        cp ../config_wr720n.txt .config
-        make defconfig
-    - name: Compilar Firmware
-      env:
-        FORCE_UNSAFE_CONFIGURE: "1"
-        FORCE: "1"
-      run: cd openwrt && make -j$(nproc) V=s
+        docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ubuntu:18.04 /bin/bash -c "
+          apt-get update && 
+          DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git libncurses5-dev zlib1g-dev gawk flex quilt libssl-dev unzip python time file wget curl sudo bison gettext autoconf automake libtool pkg-config bc m4 &&
+          git clone https://github.com/xieyaxiongfly/Atheros_CSI_tool_OpenWRT_src.git openwrt &&
+          cd openwrt &&
+          ./scripts/feeds update -a &&
+          ./scripts/feeds install -a &&
+          cp ../config_wr720n.txt .config &&
+          make defconfig &&
+          FORCE_UNSAFE_CONFIGURE=1 FORCE=1 make -j\$(nproc) V=s
+        "
     - name: Subir archivo BIN
       uses: actions/upload-artifact@v4
       with:
