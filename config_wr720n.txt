@@ -41,14 +41,15 @@ CONFIG_TARGET_ar71xx_generic_DEVICE_tl-wr720n-v3=y
 # CONFIG_PACKAGE_kmod-usb-ohci is not set
 
 # ==========================================
-# 6. HERRAMIENTAS DE CAPTURA Y RED (Versión Lite)
+# 6. HERRAMIENTAS DE CAPTURA Y RED (Versión Lite y Externa)
 # ==========================================
-# Evitamos el tcpdump pesado
 # CONFIG_PACKAGE_tcpdump is not set
 
-# Añadimos las versiones ligeras y el servidor SSH
-CONFIG_PACKAGE_tcpdump-mini=y
-CONFIG_PACKAGE_libpcap=y
+# Las librerías pesadas se compilan como instaladores externos (.ipk)
+CONFIG_PACKAGE_tcpdump-mini=m
+CONFIG_PACKAGE_libpcap=m
+
+# Las herramientas básicas de Wi-Fi sí las incrustamos
 CONFIG_PACKAGE_iw=y
 CONFIG_PACKAGE_iwinfo=y
 CONFIG_PACKAGE_dropbear=y
