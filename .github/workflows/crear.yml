@@ -8,8 +8,10 @@ jobs:
     - name: Preparar cápsula del tiempo (Ubuntu 20.04)
       run: |
         apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git libncurses5-dev zlib1g-dev gawk flex quilt libssl-dev unzip python3 python2 python-is-python2 time file wget curl sudo
+        DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential git libncurses5-dev zlib1g-dev gawk flex quilt libssl-dev unzip python3 python2 python-is-python2 time file wget curl sudo bison gettext autoconf automake libtool pkg-config bc m4
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Clonar código CSI
       run: git clone https://github.com/xieyaxiongfly/Atheros_CSI_tool_OpenWRT_src.git openwrt
     - name: Actualizar e inyectar configuración
